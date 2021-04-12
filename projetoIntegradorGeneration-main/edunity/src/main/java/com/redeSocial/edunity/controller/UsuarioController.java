@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,23 +51,17 @@ public class UsuarioController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Usuario> GetById(@PathVariable long id) {
-		return usuarioRepository.findById(id).map(resp -> ResponseEntity.ok(resp))
-				.orElse(ResponseEntity.notFound().build());
+		return ResponseEntity.ok(usuarioService.getUsuarioById(id));
+	}
+	
+	@GetMapping ("/perfil/{usuario}")
+	public ResponseEntity<Usuario> getByUsuario (@PathVariable String usuario) {
+		return ResponseEntity.ok(usuarioService.getByUsuario(usuario));
 	}
 
-	@GetMapping("/usuario/{nome}")
-	public ResponseEntity<List<Usuario>> GetByUsuario(@PathVariable String nome) {
-		return ResponseEntity.ok(usuarioRepository.findAllByNomeContainingIgnoreCase(nome));
-	}
-
-	@PostMapping
-	public ResponseEntity<Usuario> postUsuario(@RequestBody Usuario nome) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioRepository.save(nome));
-	}
-
-	@PutMapping
-	public ResponseEntity<Usuario> putUsuario(@RequestBody Usuario nome) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioRepository.save(nome));
+	@GetMapping ("/pesquisa/{usuario}")
+	public ResponseEntity<List<Usuario>> getPerfilByUsuario (@PathVariable String usuario) {
+		return ResponseEntity.ok(usuarioService.getPerfilByUsuario(usuario));
 	}
 
 	@DeleteMapping("/{id}")

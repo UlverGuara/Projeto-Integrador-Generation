@@ -1,6 +1,7 @@
 package com.redeSocial.edunity.service;
 
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +24,21 @@ public class UsuarioService {
 		usuario.setSenha(senhaEncoder);
 		
 		return repository.save(usuario);
+	}
+	
+	public Usuario getUsuarioById (Long id) {
+		Optional<Usuario> usuario = repository.findById(id);
+		return usuario.get();
+	}
+	
+	public Usuario getByUsuario (String path) {
+		Optional<Usuario> usuario = repository.findByUsuario(path);
+		return usuario.get();
+	}
+	
+	public List<Usuario> getPerfilByUsuario (String path) {
+		List<Usuario> usuario = repository.findByUsuarioContainingIgnoreCase(path);
+		return usuario;
 	}
 	
 	public Optional<UserLogin> logar (Optional<UserLogin> user) {
